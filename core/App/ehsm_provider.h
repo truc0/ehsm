@@ -331,7 +331,7 @@ Generate HMAC(SHA-256) of payload with given apikey
 Input:
 cmk -- A symmetric cmk
 apikey -- 32byte random number (in ciphertext)
-payload -- the payload, a string
+payload -- the payload, a base64 encoded string
 Output:
 hmac -- the hmac
 */
