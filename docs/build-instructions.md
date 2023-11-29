@@ -2,18 +2,33 @@
 
 Welcome to see the build instructions for the ehsm-kms project.
 
-
 ## Quick start with Docker-Compose
-**Notes:** The below steps has been verified on the **Ubuntu-20.04**. <br>
+
+**Notes:** The below steps has been verified on the **Ubuntu-20.04**.
 
 * Install requirement tools
+
     ``` shell
     sudo apt update
 
-    sudo apt install vim autoconf automake build-essential cmake curl debhelper git libcurl4-openssl-dev libprotobuf-dev libssl-dev libtool lsb-release ocaml ocamlbuild protobuf-compiler wget libcurl4 libssl1.1 make g++ fakeroot libelf-dev libncurses-dev flex bison libfdt-dev libncursesw5-dev pkg-config libgtk-3-dev libspice-server-dev libssh-dev python3 python3-pip  reprepro unzip libjsoncpp-dev uuid-dev liblog4cplus-1.1-9 liblog4cplus-dev dnsutils
+    sudo apt install vim autoconf automake build-essential cmake curl debhelper git libcurl4-openssl-dev libprotobuf-dev libssl-dev libtool lsb-release ocaml ocamlbuild protobuf-compiler wget libcurl4 libssl1.1 make g++ fakeroot libelf-dev libncurses-dev flex bison libfdt-dev libncursesw5-dev pkg-config libgtk-3-dev libspice-server-dev libssh-dev python3 python3-pip  reprepro unzip libjsoncpp-dev uuid-dev dnsutils
+    ```
+
+* Install Log4cplus 2.1.1
+
+    ```shell
+    # Download and untar
+    wget https://github.com/log4cplus/log4cplus/releases/download/REL_2_1_1/log4cplus-2.1.1.tar.gz
+    tar zxvf log4cplus-2.1.1.tar.gz
+    cd log4cplus-2.1.1
+    # Install
+    ./configure
+    make
+    make install
     ```
 
 * Install SGX SDK
+
     ```shell
     wget https://download.01.org/intel-sgx/sgx-linux/2.18/as.ld.objdump.r4.tar.gz
     tar -zxf as.ld.objdump.r4.tar.gz
@@ -28,6 +43,7 @@ Welcome to see the build instructions for the ehsm-kms project.
     ```
 
 * Install DCAP required packages
+
     ```shell
     cd /opt/intel
 
@@ -45,9 +61,11 @@ Welcome to see the build instructions for the ehsm-kms project.
     ```
 
 * Change PCCS server IP
+
     ``` shell
     vim /etc/sgx_default_qcnl.conf
     ```
+
     ``` vi
     # PCCS server address
     PCCS_URL=https://1.2.3.4:8081/sgx/certification/v3/ (your pccs IP)
@@ -57,6 +75,7 @@ Welcome to see the build instructions for the ehsm-kms project.
     ```
 
 * Install docker-compose
+
     ``` shell
     # Download the current stable release (remove the "-x $http_proxy" if you don't behind the proxy)
     sudo curl -x $http_proxy -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -70,6 +89,7 @@ Welcome to see the build instructions for the ehsm-kms project.
     ```
 
 * Build and Run ehsm-kms with docker-compose
+
     ```shell
     # Download the ehsm code from github
     git clone --recursive https://github.com/intel/ehsm.git ehsm && cd ehsm
@@ -88,26 +108,31 @@ Welcome to see the build instructions for the ehsm-kms project.
     # start to build and run the docker images (couchdb, dkeyserver, dkeycache, ehsm_kms_service)
     cd docker && docker-compose up -d
     ```
-    You will get below results:<br>
+
+    You will get below results:
+
     ![image](diagrams/docker-compose-result.PNG)
 
 * Enrollment of the APPID and APIKey
+
     ``` shell
     curl [--insecure] https://1.2.3.4:9000/ehsm?Action=Enroll
     ```
+
     ![image](diagrams/enroll.PNG)
 
 * Run the unittest cases (you can do it in another remote device)
     * Test with python script
+
     ``` shell
     cd test
     # run the unit testcases
     python3 test_kms_with_cli.py --url https://<ip_addr>:<port>
     ```
-    Then, you will get the below test result:<br>
-    ![unittest-result-with-rest.png](diagrams/unittest-result-with-rest.PNG)
 
+    Then, you will get the below test result:
+
+    ![unittest-result-with-rest.png](diagrams/unittest-result-with-rest.PNG)
 
 **Notes:**
 If you want to deploy the ehsm-kms service into the K8S environment, please refer to the doc [deployment-instructions](deployment-instructions.md).
-

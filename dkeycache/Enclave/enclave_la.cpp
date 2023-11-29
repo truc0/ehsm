@@ -202,7 +202,7 @@ extern "C" ATTESTATION_STATUS enclave_la_session_request(sgx_dh_msg1_t *dh_msg1,
     dh_session_t session_info = {
         .session_id = 0,
         .status = 0,
-        .in_progress = 0,
+        .in_progress = {0},
     };
     sgx_dh_session_t sgx_dh_session;
     sgx_status_t status = SGX_SUCCESS;

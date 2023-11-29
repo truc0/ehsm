@@ -43,8 +43,6 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libjsoncpp-dev \
     uuid-dev\
-    liblog4cplus-1.1-9\
-    liblog4cplus-dev\
     dnsutils
 
 # Install the SDK
@@ -66,7 +64,7 @@ RUN wget https://download.01.org/intel-sgx/sgx-dcap/1.15/linux/distro/ubuntu20.0
     && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | apt-key add - \
     && apt-get update
 
-RUN apt-get update &&apt-get install -y \
+RUN apt-get update && apt-get install -y \
     libsgx-enclave-common-dev \
     libsgx-ae-qe3 \
     libsgx-ae-qve \
@@ -80,6 +78,18 @@ RUN apt-get update &&apt-get install -y \
     libsgx-ra-network \
     libsgx-ra-uefi \
     libsgx-dcap-ql-dev
+
+# Install log4cplus 2.1.1
+RUN cd /tmp \
+    && wget https://github.com/log4cplus/log4cplus/releases/download/REL_2_1_1/log4cplus-2.1.1.tar.gz \
+    && tar xvzf log4cplus-2.1.1.tar.gz
+
+RUN cd /tmp/log4cplus-2.1.1 \
+    && ./configure \
+    && make \
+    && make install \
+    && rm -rf /tmp/log4cplus-2.1.1 \
+    && ldconfig # reload LD_LIBRARY_PATH to correctly load log4cplus
 
 # Build App from source
 WORKDIR /home

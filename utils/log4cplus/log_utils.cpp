@@ -41,14 +41,14 @@ int initLogger(const char* logs_filename)
                                     MAX_FILE_NUMBER));
         fileAppender->setName(LOG4CPLUS_TEXT("file"));
         log4cplus::tstring filePattern = LOG4CPLUS_TEXT("%h %d{%m/%d/%y %H:%M:%S,%q} %-4p %m %n");
-        fileAppender->setLayout(std::auto_ptr<Layout>(new PatternLayout(filePattern)));
+        fileAppender->setLayout(std::unique_ptr<Layout>(new PatternLayout(filePattern)));
         Logger::getRoot().addAppender(fileAppender);
     }
 
     SharedAppenderPtr consoleAppender(new log4cplus::ConsoleAppender);
     consoleAppender->setName(LOG4CPLUS_TEXT("console"));
     log4cplus::tstring consolePattern = LOG4CPLUS_TEXT("%h %d{%m/%d/%y %H:%M:%S,%q} %-4p %m %n");
-    consoleAppender->setLayout(std::auto_ptr<Layout>(new PatternLayout(consolePattern)));
+    consoleAppender->setLayout(std::unique_ptr<Layout>(new PatternLayout(consolePattern)));
 
     if (IS_DEBUG)
     {
